@@ -1,0 +1,17 @@
+.nav-button:active{
+    background-color:orange;
+    color:white;
+}
+.nav-button:focus{
+    background-color:orange;
+    color:white;  
+}
+.nav-button:hover{
+    background-color:orange;
+    color:white; 
+}
+.nav-button{
+    width:80%;
+    padding-top:14px;
+    padding-bottom:14px
+}

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      * {
+        font-family: "Roboto", sans-serif;
+      }
+      body {
+        background-color: whitesmoke;
+      }
+      @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+      /* Using a class to apply hover effect */
+      .nav-button:hover {
+        background-color: orange;
+        color: white;
+      }
+      .nav-button:active {
+        background-color: orange;
+        color: white;
+      }
+      .nav-button:focus {
+        background-color: orange;
+        color: white;
+      }
+      .total-responses-container,
+      .adoption-rate-container,
+      .female-respondents-container,
+      .male-respondents-container {
+        background-color: white;
+        width:300px;
+        height:130px;
+        border-radius:10px;
+        padding:0.5%;
+        display:flex;
+        flex-direction:column;
+        gap:35px;
+      }
+
+      .profile-total-responses-container,
+      .profile-adoption-rate-container,
+      .profile-female-respondents-container,
+      .profile-male-respondents-container
+      {
+        display:flex;
+        flex-direction:row;
+        gap:90px;
+      }
+      .KPI{
+        display:flex;
+        flex-direction:row;
+        gap:25px;
+        margin-top:35px;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      class="main-content"
+      style="
+        display: flex;
+        flex-direction: row;
+        gap: 5%;
+        width: 100%;
+        height: 100%;
+      "
+    >
+      <div
+        class="nav-bar"
+        style="
+          background-color: black;
+          width: 20%;
+          border-radius: 7px;
+          height: 93vh;
+        "
+      >
+        <h3
+          style="
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+          "
+        >
+          🏦 Mobile Banking Dashboard
+        </h3>
+        <hr style="width: 88%" />
+        <!-- <br> -->
+        <div
+          style="
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+          "
+        >
+          <button
+            style="
+              width: 91%;
+              padding-top: 14px;
+              padding-bottom: 14px;
+              font-size: 15px;
+              display: flex;
+              justify-content: start;
+              border-radius: 7px;
+              border: none;
+            "
+            class="nav-button"
+          >
+            📊 Dashboard
+          </button>
+          <button
+            style="
+              width: 91%;
+              padding-top: 14px;
+              padding-bottom: 14px;
+              font-size: 15px;
+              display: flex;
+              justify-content: start;
+              border-radius: 7px;
+              border: none;
+            "
+            class="nav-button"
+          >
+            🤖 Overview
+          </button>
+        </div>
+      </div>
+      <div class="content" style="width: 70%">
+        <h3>Dashboard</h3>
+        <div style="display:flex;flex-direction:row;justify-content:space-between;align-items:center;width:60%;position:absolute">
+            <span style="color: white;background-color:rgb(101, 250, 101);width:70px;height:55px;margin-left:12px;border-radius:10px;font-size:27px;display:flex;justify-content:center;align-items:center">👤</span>
+            <span style="color: white;background-color:orange;width:70px;height:55px;margin-right:4px;border-radius:10px;font-size:27px;display:flex;justify-content:center;align-items:center">📊</span>
+            <span style="color: white;background-color:black;width:70px;height:55px;margin-right:5px;border-radius:10px;font-size:27px;display:flex;justify-content:center;align-items:center">👩</span>
+            <span style="color: white;background-color:rgb(241, 59, 90);width:70px;height:55px;margin-right:7px;border-radius:10px;font-size:27px;display:flex;justify-content:center;align-items:center">👨</span>
+           </div>
+        <div class="KPI">
+          <!-- total response div -->
+          <div class="total-responses-container">
+            <div class="profile-total-responses-container">
+              <div>
+              </div>
+              <div>
+                <p style="line-height:0;font-size:12px;color: grey">Total Respondents</p>
+                <p style="font-size: 25px; font-weight: bold;line-height:0">
+                  {{total_responses}}
+                </p>
+              </div>
+            </div>
+            <div>
+              <span style="color: #35f035">+22%</span>
+              <span style="color:grey">than last month</span>
+            </div>
+          </div>
+          <!-- Adoption rate container -->
+          <div class="adoption-rate-container">
+            <!-- <p>Mobile Banking App Adoption Rate:{{adoption_rate|floatformat:0}}%</p> -->
+            <div class="profile-adoption-rate-container">
+              <div>
+              </div>
+              <div>
+                <p style="line-height:0;font-size:12px;color: grey">Adoption Rate</p>
+                <p style="font-size: 25px; font-weight: bold;line-height:0">
+                  {{adoption_rate|floatformat:0}}%
+                </p>
+              </div>
+            </div>
+            <div>
+              <span style="color: #35f035">+10%</span>
+              <span style="color:grey">than last month</span>
+            </div>
+          </div>
+          <!-- female respondents div -->
+          <div class="female-respondents-container">
+            <!-- <p>Female Respondents: {{female_respondents|floatformat:0}}%</p> -->
+            <div class="profile-female-respondents-container">
+              <div>
+              </div>
+              <div>
+                <p style="line-height:0;font-size:12px;color: grey">Female Respondents</p>
+                <p style="font-size: 25px; font-weight: bold;line-height:0">
+                  {{female_respondents|floatformat:0}}%
+                </p>
+              </div>
+            </div>
+            <div>
+              <span style="color: #35f035">+40%</span>
+              <span style="color:grey">than last month</span>
+            </div>
+          </div>
+          <!-- Male Respondents Div -->
+          <div class="male-respondents-container">
+            <!-- <p>Male Respondents: {{male_respondents|floatformat:0}}%</p> -->
+            <div class="profile-male-respondents-container">
+              <div>
+              </div>
+              <div>
+                <p style="line-height:0;font-size:12px;color: grey">Male Respondents</p>
+                <p style="font-size: 25px; font-weight: bold;line-height:0">
+                  {{male_respondents|floatformat:0}}%
+                </p>
+              </div>
+            </div>
+            <div>
+              <span style="color: #35f035">+4%</span>
+              <span style="color:grey">than last month</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
