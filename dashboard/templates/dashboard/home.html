@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <style>
       * {
         font-family: "Roboto", sans-serif;
@@ -27,29 +28,90 @@
       .female-respondents-container,
       .male-respondents-container {
         background-color: white;
-        width:300px;
-        height:130px;
-        border-radius:10px;
-        padding:0.5%;
-        display:flex;
-        flex-direction:column;
-        gap:35px;
+        width: 300px;
+        height: 130px;
+        border-radius: 10px;
+        padding: 0.5%;
+        display: flex;
+        flex-direction: column;
+        gap: 35px;
       }
 
       .profile-total-responses-container,
       .profile-adoption-rate-container,
       .profile-female-respondents-container,
-      .profile-male-respondents-container
-      {
-        display:flex;
-        flex-direction:row;
-        gap:90px;
+      .profile-male-respondents-container {
+        display: flex;
+        flex-direction: row;
+        gap: 90px;
       }
-      .KPI{
-        display:flex;
-        flex-direction:row;
-        gap:25px;
-        margin-top:35px;
+      .KPI {
+        display: flex;
+        flex-direction: row;
+        gap: 25px;
+        margin-top: 35px;
+      }
+      .demographic-button:hover,
+      .demographic-button:active,
+      .demographic-button:focus {
+        background-color: white;
+        color: black;
+      }
+      .mobile-banking-button:hover,
+      .mobile-banking-button:active,
+      .mobile-banking-button:focus {
+        background-color: white;
+        color: black;
+      }
+      
+      .demographic-button {
+        width: 100%;
+        height: 50px;
+        border-radius: 10px;
+        border: none;
+        background-color: black;
+        color: white;
+        font-size: 18px;
+        text-align: start;
+        padding: 1.5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .mobile-banking-preference-button:hover,
+      .mobile-banking-preference-button:active,
+      .mobile-banking-preference-button:focus {
+        background-color: white;
+        color: black;
+      }
+      .mobile-banking-preference-button{
+        width: 100%;
+        height: 50px;
+        border-radius: 10px;
+        border: none;
+        background-color: black;
+        color: white;
+        font-size: 18px;
+        text-align: start;
+        padding: 1.5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .mobile-banking-button {
+        width: 100%;
+        height: 50px;
+        border-radius: 10px;
+        border: none;
+        background-color: black;
+        color: white;
+        font-size: 18px;
+        text-align: start;
+        padding: 1.5%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
       }
     </style>
   </head>
@@ -59,7 +121,7 @@
       style="
         display: flex;
         flex-direction: row;
-        gap: 5%;
+        gap: 25%;
         width: 100%;
         height: 100%;
       "
@@ -70,7 +132,11 @@
           background-color: black;
           width: 20%;
           border-radius: 7px;
-          height: 93vh;
+          height: 100vh;
+          position: fixed;
+          top: 0;
+          bottom: 0;
+          left: 0;
         "
       >
         <h3
@@ -128,88 +194,274 @@
           </button>
         </div>
       </div>
-      <div class="content" style="width: 70%">
+      <div class="content" style="width: 70%; margin-left: 350px">
         <h3>Dashboard</h3>
-        <div style="display:flex;flex-direction:row;justify-content:space-between;align-items:center;width:60%;position:absolute">
-            <span style="color: white;background-color:rgb(101, 250, 101);width:70px;height:55px;margin-left:12px;border-radius:10px;font-size:27px;display:flex;justify-content:center;align-items:center">👤</span>
-            <span style="color: white;background-color:orange;width:70px;height:55px;margin-right:4px;border-radius:10px;font-size:27px;display:flex;justify-content:center;align-items:center">📊</span>
-            <span style="color: white;background-color:black;width:70px;height:55px;margin-right:5px;border-radius:10px;font-size:27px;display:flex;justify-content:center;align-items:center">👩</span>
-            <span style="color: white;background-color:rgb(241, 59, 90);width:70px;height:55px;margin-right:7px;border-radius:10px;font-size:27px;display:flex;justify-content:center;align-items:center">👨</span>
-           </div>
+        <div
+          style="
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            width: 60%;
+            position: absolute;
+          "
+        >
+          <span
+            style="
+              color: white;
+              background-color: rgb(101, 250, 101);
+              width: 70px;
+              height: 55px;
+              margin-left: 12px;
+              border-radius: 10px;
+              font-size: 27px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            >👤</span
+          >
+          <span
+            style="
+              color: white;
+              background-color: orange;
+              width: 70px;
+              height: 55px;
+              margin-right: 4px;
+              border-radius: 10px;
+              font-size: 27px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            >📊</span
+          >
+          <span
+            style="
+              color: white;
+              background-color: black;
+              width: 70px;
+              height: 55px;
+              margin-right: 5px;
+              border-radius: 10px;
+              font-size: 27px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            >👤</span
+          >
+          <span
+            style="
+              color: white;
+              background-color: rgb(241, 59, 90);
+              width: 70px;
+              height: 55px;
+              margin-right: 7px;
+              border-radius: 10px;
+              font-size: 27px;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            "
+            >👤</span
+          >
+        </div>
         <div class="KPI">
           <!-- total response div -->
           <div class="total-responses-container">
             <div class="profile-total-responses-container">
+              <div></div>
               <div>
-              </div>
-              <div>
-                <p style="line-height:0;font-size:12px;color: grey">Total Respondents</p>
-                <p style="font-size: 25px; font-weight: bold;line-height:0">
+                <p style="line-height: 0; font-size: 12px; color: grey">
+                  Total Respondents
+                </p>
+                <p style="font-size: 25px; font-weight: bold; line-height: 0">
                   {{total_responses}}
                 </p>
               </div>
             </div>
             <div>
               <span style="color: #35f035">+22%</span>
-              <span style="color:grey">than last month</span>
+              <span style="color: grey">than last month</span>
             </div>
           </div>
           <!-- Adoption rate container -->
           <div class="adoption-rate-container">
             <!-- <p>Mobile Banking App Adoption Rate:{{adoption_rate|floatformat:0}}%</p> -->
             <div class="profile-adoption-rate-container">
+              <div></div>
               <div>
-              </div>
-              <div>
-                <p style="line-height:0;font-size:12px;color: grey">Adoption Rate</p>
-                <p style="font-size: 25px; font-weight: bold;line-height:0">
+                <p style="line-height: 0; font-size: 12px; color: grey">
+                  Adoption Rate
+                </p>
+                <p style="font-size: 25px; font-weight: bold; line-height: 0">
                   {{adoption_rate|floatformat:0}}%
                 </p>
               </div>
             </div>
             <div>
               <span style="color: #35f035">+10%</span>
-              <span style="color:grey">than last month</span>
+              <span style="color: grey">than last month</span>
             </div>
           </div>
           <!-- female respondents div -->
           <div class="female-respondents-container">
             <!-- <p>Female Respondents: {{female_respondents|floatformat:0}}%</p> -->
             <div class="profile-female-respondents-container">
+              <div></div>
               <div>
-              </div>
-              <div>
-                <p style="line-height:0;font-size:12px;color: grey">Female Respondents</p>
-                <p style="font-size: 25px; font-weight: bold;line-height:0">
-                  {{female_respondents|floatformat:0}}%
+                <p style="line-height: 0; font-size: 12px; color: grey">
+                  Female Respondents
+                </p>
+                <p style="font-size: 25px; font-weight: bold; line-height: 0">
+                  {{female_respondents}}
                 </p>
               </div>
             </div>
             <div>
               <span style="color: #35f035">+40%</span>
-              <span style="color:grey">than last month</span>
+              <span style="color: grey">than last month</span>
             </div>
           </div>
           <!-- Male Respondents Div -->
           <div class="male-respondents-container">
             <!-- <p>Male Respondents: {{male_respondents|floatformat:0}}%</p> -->
             <div class="profile-male-respondents-container">
+              <div></div>
               <div>
-              </div>
-              <div>
-                <p style="line-height:0;font-size:12px;color: grey">Male Respondents</p>
-                <p style="font-size: 25px; font-weight: bold;line-height:0">
-                  {{male_respondents|floatformat:0}}%
+                <p style="line-height: 0; font-size: 12px; color: grey">
+                  Male Respondents
+                </p>
+                <p style="font-size: 25px; font-weight: bold; line-height: 0">
+                  {{male_respondents}}
                 </p>
               </div>
             </div>
             <div>
               <span style="color: #35f035">+4%</span>
-              <span style="color:grey">than last month</span>
+              <span style="color: grey">than last month</span>
+            </div>
+          </div>
+        </div>
+        <!-- Plots Contents -->
+        <div class="all-plots-container" style="margin-top: 25px">
+          <!-- Demographic Plots -->
+          <button class="demographic-button" onclick="toggleContent()">
+            <p>Demographi Distribution</p>
+            <p id="show-not-show">-</p>
+          </button>
+          <div id="all-demographic-plots">
+            <div
+              id="demographi-plots"
+              style="
+                margin-top: 15px;
+                display: flex;
+                flex-direction: row;
+                gap: 29px;
+              "
+            >
+              <div>{{ plot_age_html|safe }}</div>
+              <div>{{plot_occupation_html|safe}}</div>
+            </div>
+            <div style="margin-top: 25px">{{plot_gender_html|safe}}</div>
+          </div>
+          <!-- Mobile Banking Usage Plots -->
+          <div class="mobile-banking-usage-plots" style="margin-top: 25px">
+            <button
+              class="mobile-banking-button"
+              onclick="toggleUsageContent()"
+            >
+              <p>Mobile Banking Usage</p>
+              <p id="usage-show-not-show">-</p>
+            </button>
+            <div id="all-mobile-banking-usage-plots">
+              <div
+                id="usage-plots"
+                style="
+                  margin-top: 15px;
+                  display: flex;
+                  flex-direction: row;
+                  gap: 29px;
+                "
+              >
+                <div>{{ plot_usage_age_html|safe }}</div>
+                <div>{{plot_duration_html|safe}}</div>
+              </div>
+              <div style="margin-top: 25px">
+                {{plot_occupation_usage_html|safe}}
+              </div>
+            </div>
+          </div>
+          <!-- AI In moile banking preference -->
+          <div class="mobile-banking-preference-plots" style="margin-top: 25px">
+            <button
+              class="mobile-banking-preference-button"
+              onclick="togglePreferenceContent()"
+            >
+              <p>AI in Mobile Banking Preferences</p>
+              <p id="preference-show-not-show">-</p>
+            </button>
+            <div id="all-mobile-banking-preference-plots">
+              <div
+                id="preference-plots"
+                style="
+                  margin-top: 15px;
+                  display: flex;
+                  flex-direction: row;
+                  gap: 29px;
+                "
+              >
+                <div>{{ plot_fm_efficiency_html|safe }}</div>
+                <div></div>
+              </div>
+              <div style="margin-top: 25px">
+                {{plot_fa_advice_html|safe}}
+              </div>
+              <div style="margin-top:25px">
+                {{plot_nl_importance_html|safe}}
+                {{plot_ca_mobile_banking_html|safe}}
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+
+    <script>
+      function toggleContent() {
+        var demographic_content = document.getElementById(
+          "all-demographic-plots"
+        );
+        if (demographic_content.style.display === "none") {
+          demographic_content.style.display = "block";
+        } else {
+          demographic_content.style.display = "none";
+        }
+        var show_button = document.getElementById("show-not-show");
+        if (show_button.textContent === "-") {
+          show_button.textContent = "+";
+        } else {
+          show_button.textContent = "-";
+        }
+      }
+      function toggleUsageContent() {
+        var usage_content = document.getElementById(
+          "all-mobile-banking-usage-plots"
+        );
+        if (usage_content.style.display === "none") {
+          usage_content.style.display = "block";
+        } else {
+          usage_content.style.display = "none";
+        }
+        var show_button = document.getElementById("usage-show-not-show");
+        if (show_button.textContent === "-") {
+          show_button.textContent = "+";
+        } else {
+          show_button.textContent = "-";
+        }
+     
+      }
+    </script>
   </body>
 </html>
