@@ -6,6 +6,13 @@ from collections import Counter
 import pandas as pd
 from textblob import TextBlob
 from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.cluster import KMeans
+
+from sklearn.decomposition import LatentDirichletAllocation
 
 
 # Create your views here.
@@ -277,7 +284,7 @@ def home(request):
         annotations=all_annotations['18-25']  # Set initial annotations for the first visible group
     )
 
-    # Add dropdown buttons for age groups
+    # Add dropdown buttons for age groups with a title label
     fig_fm_efficiency.update_layout(
         updatemenus=[
             dict(
@@ -315,8 +322,16 @@ def home(request):
                 ],
                 direction="down",
                 showactive=True,
-            ),
+                x=1.17,  # Adjust position to move right
+                xanchor="right",
+                y=1.15,  # Adjust position to move up
+                yanchor="top",
+                pad={"r": 10, "t": 10},  # Adds padding around the menu
+            )
         ],
+        annotations=[dict(text="Select Age Group:",  # Add label for the dropdown
+                        x=1.18, y=1.18, xref="paper", yref="paper",
+                        showarrow=False, font=dict(size=12))],
         title="Perception of AI in Financial Management Efficiency",
         xaxis_title="Response",
         yaxis_title="Count",
@@ -325,6 +340,7 @@ def home(request):
 
     # Convert to HTML for rendering in Django
     plot_fm_efficiency_html = fig_fm_efficiency.to_html(full_html=False)
+
 
 
     # Perception of AI in Providing Financial Advice (Bar Plot)
@@ -366,7 +382,7 @@ def home(request):
             y=list(sorted_fa_counts.values()),
             name=age_group,
             visible=(age_group == '18-24'),  # Show only the first age group initially
-            marker_color='#4169E1'
+            marker_color='#4169E1'  # Color for the bars
         ))
 
         # Create annotations for this age group
@@ -392,7 +408,7 @@ def home(request):
         annotations=all_annotations['18-24']  # Set initial annotations for the first visible group
     )
 
-    # Add dropdown buttons for age groups
+    # Add dropdown buttons for age groups with a title label
     fig_fa_advice.update_layout(
         updatemenus=[
             dict(
@@ -424,8 +440,16 @@ def home(request):
                 ],
                 direction="down",
                 showactive=True,
-            ),
+                x=1.17,  # Adjust position to move right
+                xanchor="right",
+                y=1.15,  # Adjust position to move up
+                yanchor="top",
+                pad={"r": 10, "t": 10},  # Adds padding around the menu
+            )
         ],
+        annotations=[dict(text="Select Age Group:",  # Add label for the dropdown
+                        x=1.18, y=1.18, xref="paper", yref="paper",
+                        showarrow=False, font=dict(size=12))],
         title="Perception of AI in Providing Financial Advice",
         xaxis_title="Response",
         yaxis_title="Count",
@@ -434,6 +458,7 @@ def home(request):
 
     # Convert to HTML for rendering in Django
     plot_fa_advice_html = fig_fa_advice.to_html(full_html=False)
+
 
 
 
@@ -623,6 +648,101 @@ def home(request):
     # Convert the plot to HTML for rendering in Django
     plot_bigrams_html = fig_bigrams.to_html(full_html=False)
 
+
+    # Clustering
+    # Step 1: Fetch your data from the database
+    
+    # Step 2: Define your feature columns
+    feature_columns = [
+        'Age',
+        'Gender',
+        'Occupation',
+        'UseMobileBankingApps',
+        'HowLongBeenUsingMobileBankingApplications',
+        'UsingBankingAppsMakesFinancialManagementMoreEfficient',
+        'BankingAppsProvideFinancialAdviceThatIFindUseful',
+        'ItIsImportantThatAIBankingAppsAreAvailableInMyNativeLanguage',
+        'IWouldBeMoreLikelyToUseAIEnabledMobileBankingIfItInteractedInACulturallyAppropriateManner',
+        'AIFeaturesSuchAsChatbotsAndAutomatedAlertsInMobileBankingAreEasyToUse',
+        'SeamlessIntegrationOfAIIntoMobileBankingAppsMakesMeMoreLikelyToUseThem',
+        'MyCulturalBackgroundInfluencesMyTrustAndUseOfAIEnabledMobileBanking',
+        'IPreferAIFeaturesThatAreSensitiveToMyCulture',
+        'ITrustTheSecurityMeasuresInAIEnabledMobileBankingApps',
+        'PersonalizedServiceInAIEnabledMobileBankingIncreaseMySatisfaction',
+        'AIEnabledMobileBankingAppearsIntelligentEnoughToHandleComplexTransactions',
+        'IFeelComfortableInteractingWithAIAsThoughItWereAHumanBankingAssistant'
+    ]
+
+    X = df[feature_columns]
+
+    # Step 4: Preprocessing pipelines
+    numeric_features = ['Age']
+    categorical_features = feature_columns[1:]
+
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ('num', StandardScaler(), numeric_features),
+            ('cat', OneHotEncoder(), categorical_features)
+        ]
+    )
+
+    # Step 5: Clustering with K-Means
+    kmeans_pipeline = Pipeline(steps=[
+        ('preprocessor', preprocessor),
+        ('kmeans', KMeans(n_clusters=3, random_state=42))
+    ])
+
+    kmeans_pipeline.fit(X)
+    df['Cluster'] = kmeans_pipeline.predict(X)
+
+    # Step 8: Dimensionality reduction with PCA
+    X_reduced = PCA(n_components=2).fit_transform(preprocessor.fit_transform(X))
+
+    # Step 9: Create DataFrame for plotting
+    cluster_df = pd.DataFrame(X_reduced, columns=['PCA1', 'PCA2'])
+    cluster_df['Cluster'] = df['Cluster']
+
+    # Calculate centroids for each cluster
+    centroids = kmeans_pipeline.named_steps['kmeans'].cluster_centers_
+    centroids_reduced = PCA(n_components=2).fit_transform(centroids)
+
+    # Step 10: Plotly scatter plot with discrete colors and cluster centroids
+    fig = px.scatter(
+        cluster_df,
+        x='PCA1',
+        y='PCA2',
+        color=cluster_df['Cluster'].astype(str),  # Treat 'Cluster' as categorical
+        title='K-Means Clustering of Mobile Banking Users',
+        labels={'PCA1': 'PCA Component 1', 'PCA2': 'PCA Component 2','color':'Clusters'},
+        width=930,
+        color_discrete_sequence=px.colors.qualitative.Set2,
+       
+    )
+
+    # Add cluster centroids as dark points
+    fig.add_scatter(
+        x=centroids_reduced[:, 0],
+        y=centroids_reduced[:, 1],
+        mode='markers',
+        marker=dict(size=10, color='black'),
+        name='Centroids'
+    )
+
+    # Connect points of the same cluster with lines
+    for cluster in cluster_df['Cluster'].unique():
+        cluster_points = cluster_df[cluster_df['Cluster'] == cluster]
+        fig.add_scatter(
+            x=cluster_points['PCA1'],
+            y=cluster_points['PCA2'],
+            mode='lines',
+            line=dict(width=1, dash='dash'),
+            showlegend=False  # Hide legend for the connecting lines
+        )
+
+    # Step 11: Convert the figure to HTML for rendering
+    plot_data = fig.to_html(full_html=False)
+
+
     context={'adoption_rate':adoption_rate,'total_responses':total_responses,
     'female_respondents':female_respondents,'male_respondents':male_respondents,
     'plot_age_html':plot_age_html,'plot_occupation_html':plot_occupation_html,
@@ -632,7 +752,7 @@ def home(request):
     'plot_facet_html':plot_facet_html,'plot_violin_html':plot_violin_html,
     'new_plot_bar_html':new_plot_bar_html,'plot_sentiment_doughnut_html':plot_sentiment_doughnut_html,
     'plot_keywords_html':plot_keywords_html,'new_plot_histogram_html':new_plot_histogram_html,
-    'plot_bigrams_html':plot_bigrams_html 
+    'plot_bigrams_html':plot_bigrams_html,'plot_data':plot_data 
     }
     return render(request,'dashboard/home.html',context)
 
